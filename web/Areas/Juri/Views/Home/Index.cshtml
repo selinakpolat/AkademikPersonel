@@ -1,0 +1,73 @@
+﻿@model List<dto.viewmodels.BasvuruJuriViewModel>
+@{
+	ViewData["Title"] = "Jüri Paneli";
+	Layout = "~/Areas/Juri/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-xxl flex-grow-1 container-p-y">
+	<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Jüri Paneli /</span> Anasayfa </h4>
+	<hr class="my-5" />
+	<div class="row">
+		<!-- Başvuru Listesi -->
+		<div class="col-12 col-lg-8 mb-4">
+			<div class="card">
+				<h5 class="card-header"><i class="menu-icon tf-icons bx bx-edit"></i> Başvuru Listesi</h5>
+				<div class="table-responsive text-nowrap">
+					<table class="table table-striped text-center">
+						<thead>
+							<tr>
+								<th>İSİM SOYİSİM</th>
+								<th>E-POSTA</th>
+								<th>TELEFON</th>
+								<th>BAŞVURDUĞU İLAN</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model)
+							{
+								<tr>
+									<td>@item.Isim @item.Soyisim</td>
+									<td><a href="mailto:@item.Eposta">@item.Eposta</a></td>
+									<td><a href="tel:@item.Telefon">@item.Telefon</a></td>
+									<td>@item.IlanBaslik</td>
+								</tr>
+							}
+						</tbody>
+
+
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<!-- Değerlendirme Paneli -->
+		<div class="col-md-6 col-lg-4 mb-4">
+			<div class="card h-100">
+				<div class="card-header d-flex justify-content-between align-items-center">
+					<h5 class="card-title mb-0"><i class="menu-icon tf-icons bx bx-user"></i> Değerlendirmelerim</h5>
+				</div>
+				<div class="card-body">
+					<ul class="list-unstyled">
+						@if (ViewBag.Degerlendirmeler != null)
+						{
+							<ul class="list-unstyled">
+								@foreach (var belge in ViewBag.Degerlendirmeler)
+								{
+									<li class="mb-2">
+										<a href="@belge.DosyaYolu" target="_blank">@belge.DosyaYolu</a>
+									</li>
+								}
+							</ul>
+						}
+						else
+						{
+							<p class="text-muted">Henüz yüklenmiş bir değerlendirmeniz yok.</p>
+						}
+
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,49 @@
+﻿@model List<dto.viewmodels.BasvuruJuriViewModel>
+@{
+	ViewData["Title"] = "Başvuru Değerlendir";
+	Layout = "~/Areas/Juri/Views/Shared/_Layout.cshtml";
+}
+<div class="container-xxl flex-grow-1 container-p-y">
+	<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Jüri Paneli /</span> Başvuruları Değerlendir </h4>
+	<hr class="my-5" />
+
+	<div class="row">
+		<div class="col-12 col-lg-12 mb-4">
+			<div class="card">
+				<h5 class="card-header">Başvuru Listesi</h5>
+				<div class="table-responsive text-nowrap">
+					<table class="table table-striped text-center">
+						<thead>
+							<tr>
+								<th>İSİM SOYİSİM</th>
+								<th>E-POSTA</th>
+								<th>TELEFON</th>
+								<th>BAŞVURDUĞU İLAN</th>
+								<th>DEĞERLENDİRME BELGESİ</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model)
+							{
+								<tr>
+									<td>@item.Isim @item.Soyisim</td>
+									<td><a href="mailto:@item.Eposta">@item.Eposta</a></td>
+									<td><a href="tel:@item.Telefon">@item.Telefon</a></td>
+									<td>@item.IlanBaslik</td>
+									<td>
+										<form asp-action="BelgeYukle" asp-controller="Degerlendir" asp-area="Juri" method="post" enctype="multipart/form-data">
+											<input type="hidden" name="basvuruId" value="@item.BasvuruId" />
+											<input type="file" name="dosya" class="form-control form-control-sm mb-1" required />
+											<button type="submit" class="btn btn-sm btn-primary">Yükle</button>
+										</form>
+									</td>
+								</tr>
+							}
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

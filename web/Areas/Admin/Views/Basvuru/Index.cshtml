@@ -1,0 +1,133 @@
+﻿@model List<entity.Concrate.Basvuru>
+@{
+	ViewData["Title"] = "Başvuru Düzenle";
+	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="container-xxl flex-grow-1 container-p-y">
+	<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Admin Paneli /</span> Başvuruları Düzenle </h4>
+	<hr class="my-5" />
+	<!-- Tablo -->
+	<div class="card">
+		<div class="card-header d-flex justify-content-between">
+			<h5>Başvurular</h5>
+		</div>
+		<div class="card-body">
+			<div class="table-responsive text-nowrap">
+				<table class="table table-bordered">
+					<thead>
+						<tr style="text-align:center">
+							<th><b>İLAN</b></th>
+							<th style="width: 80px;"><b>UNVAN</b></th>
+							<th><b>İSİM</b></th>
+							<th><b>SOYİSİM</b></th>
+							<th style="width: 100px;"><b>DİĞER BİLGİLER</b></th>
+							<th style="width: 80px;"><b>STATÜ</b></th>
+							<th style="width: 80px;"><b>YÖNLENDİR</b></th>
+						</tr>
+					</thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr style="text-align:center">
+
+								<td>
+									@if (item.Ilan != null)
+									{
+										<button class="btn btn-primary goster-ilan" data-id="@item.Basvuru_Id">Görüntüle</button>
+									}
+									else
+									{
+										<span class="text-muted">İlan yok</span>
+									}
+								</td>
+
+                                <td>@item.Personel?.Unvan?.Isim</td>
+                                <td>@item.Personel?.Isim</td>
+                                <td>@item.Personel?.Soyisim</td>
+                                <td>
+									<button class="btn btn-primary goster-personel" data-id="@item.Basvuru_Id">Görüntüle</button>
+
+                                </td>
+                                <td>@item.BasvuruStatu?.Statu</td>
+
+								<td>
+									<a class="btn" href="/Admin/Yonlendir/Index/@item.Basvuru_Id">
+										<i class="bx bx-user-plus"></i>
+									</a>
+								</td>
+                            </tr>
+                        }
+                    </tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- İlan Bilgileri Modal -->
+<div class="modal fade" id="ilanModal" tabindex="-1" aria-labelledby="ilanModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="ilanModalLabel">İlan Bilgileri</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+			</div>
+			<div class="modal-body">
+				<p><strong>Başlık:</strong> <span id="ilanBaslik"></span></p>
+				<p><strong>Açıklama:</strong> <span id="ilanAciklama"></span></p>
+				<p><strong>Tarih:</strong> <span id="ilanTarih"></span></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Personel Bilgileri Modal -->
+<div class="modal fade" id="personelModal" tabindex="-1" aria-labelledby="personelModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="personelModalLabel">Personel Bilgileri</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+			</div>
+			<div class="modal-body">
+				<p><strong>TC:</strong> <span id="personelTc"></span></p>
+				<p><strong>E-posta:</strong> <span id="personelEposta"></span></p>
+				<p><strong>Telefon:</strong> <span id="personelTelefon"></span></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function () {
+		// İlan modalı göster
+		$('.goster-ilan').click(function () {
+			var id = $(this).data('id');
+			$.get('/Admin/Basvuru/IlanDetay/' + id, function (data) {
+				if (data) {
+					$('#ilanBaslik').text(data.Baslik);
+					$('#ilanAciklama').text(data.Aciklama);
+					$('#ilanTarih').text(data.Tarih);
+					$('#ilanModal').modal('show');
+				} else {
+					alert("İlan bilgisi bulunamadı.");
+				}
+			});
+		});
+
+		// Personel modalı göster
+		$('.goster-personel').click(function () {
+			var id = $(this).data('id');
+			$.get('/Admin/Basvuru/BasvuruGet/' + id, function (data) {
+				if (data) {
+					$('#personelTc').text(data.Personel_TC);
+					$('#personelEposta').text(data.Personel_Eposta);
+					$('#personelTelefon').text(data.Personel_Telefon);
+					$('#personelModal').modal('show');
+				} else {
+					alert("Personel bilgisi bulunamadı.");
+				}
+			});
+		});
+	});
+</script>

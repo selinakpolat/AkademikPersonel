@@ -1,0 +1,36 @@
+﻿@model web.Models.ForgetPasswordViewModel
+@{
+    ViewData["Title"] = "Parolamı Unuttum";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-xxl">
+    <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner py-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="mb-2">Şifreni mi unuttun? 🔒</h4>
+                    <p class="mb-4">E-postanızı girin ve size şifrenizi sıfırlama talimatları gönderelim</p>
+
+                    <form asp-action="Index" method="post" class="mb-3">
+                        <div asp-validation-summary="All" class="alert alert-danger text-center"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Email</label>
+                            <input asp-for="Email" class="form-control" placeholder="Email adresini giriniz." autofocus />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary d-grid w-100">Sıfırlama linki gönder</button>
+                    </form>
+
+                    <div class="text-center">
+                        <a href="/Login/Index" class="d-flex align-items-center justify-content-center">
+                            <i class="bx bx-chevron-left scaleX-n1-rtl bx-sm"></i> Giriş ekranına geri dön
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

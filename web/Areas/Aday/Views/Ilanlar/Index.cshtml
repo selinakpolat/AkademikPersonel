@@ -1,0 +1,80 @@
+﻿@model List<entity.Concrate.Ilan>
+@{
+	ViewData["Title"] = "Aktif İlanlar";
+	Layout = "~/Areas/Aday/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+	<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Aday Paneli /</span> Aktif İlanlar </h4>
+	<hr class="my-5" />
+
+	<!-- Bordered Table -->
+	<div class="card">
+		<div class="card-header d-flex justify-content-between">
+			<h5>İlanlar</h5>
+		</div>
+		<div class="card-body">
+			<div class="table-responsive text-nowrap">
+				<table class="table table-bordered">
+					<thead>
+						<tr style="text-align:center">
+							<th><b>BAŞLIK</b></th>
+							<th><b>AÇIKLAMA</b></th>
+							<th><b>TARİH</b></th>
+							<th style="width: 80px;"><b>SAAT</b></th>
+							<th style="width: 80px;"><b>BAŞVUR</b></th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var item in Model)
+						{
+							<tr style="text-align:center">
+								<td><b>@item.Baslik</b></td>
+								<td>
+									<button class="btn btn-primary" onclick="showPopup('@item.Aciklama?.Replace("'", "\\'")')">Görüntüle</button>
+								</td>
+
+								<td><b>@item.Tarih.ToString("dd-MMMM-yyyy")</b></td>
+								<td><b>@item.Tarih.ToString("HH:mm")</b></td>
+								<td>
+									<form method="post" action="@Url.Action("BasvuruYap", "Ilanlar")">
+										<input type="hidden" name="ilanId" value="@item.Ilan_Id" />
+										<button type="submit" class="btn btn-primary">
+											<i class="bx bx-check"></i>
+										</button>
+									</form>
+								</td>
+
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!-- İlan Açıklama Modalı -->
+	<div class="modal fade" id="ilanModal" tabindex="-1" aria-labelledby="ilanModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="ilanModalLabel">İlan Detayı</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+				</div>
+				<div class="modal-body" id="ilanAciklama">
+					<!-- Açıklama buraya gelecek -->
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Kapat</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		function showPopup(aciklama) {
+			document.getElementById("ilanAciklama").innerText = aciklama;
+			var myModal = new bootstrap.Modal(document.getElementById('ilanModal'));
+			myModal.show();
+		}
+	</script>
